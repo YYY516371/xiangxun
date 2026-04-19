@@ -94,11 +94,17 @@ def get_villages():
 
 @app.route('/api/villages/<int:id>', methods=['GET'])
 def get_village(id):
-    """获取单个村庄详情"""
+    """获取单个村庄详情（复数路径）"""
     for v in villages_data:
         if v.get('id') == id:
             return jsonify(v)
     return jsonify({'error': '未找到'}), 404
+
+# 兼容单数路径 /api/village/<id>
+@app.route('/api/village/<int:id>', methods=['GET'])
+def get_village_alt(id):
+    """获取单个村庄详情（单数路径，兼容前端旧代码）"""
+    return get_village(id)
 
 @app.route('/api/provinces', methods=['GET'])
 def get_provinces():
